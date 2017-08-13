@@ -3,7 +3,7 @@
 
 module.exports = function(environment) {
   let ENV = {
-    modulePrefix: 'teste',
+    modulePrefix: 'gtechtool',
     environment,
     rootURL: '/',
     locationType: 'auto',
