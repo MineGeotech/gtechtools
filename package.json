@@ -1,14 +1,15 @@
 {
+  "id": "gtechtool",
   "name": "gtechtool",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Small description for gtechtool goes here",
   "license": "MIT",
-  "author": "",
+  "author": "Murray Bryant",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/MineGeotech/gtechtools",
   "scripts": {
     "build": "ember build",
     "start": "ember server",

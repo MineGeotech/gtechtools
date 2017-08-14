@@ -13,15 +13,15 @@ module.exports = {
   },
   "electronPackagerConfig": {},
   "electronWinstallerConfig": {
-    "name": ""
+    "name": "gtechtools"
   },
   "electronInstallerDebian": {},
   "electronInstallerRedhat": {},
   "github_repository": {
-    "owner": "",
-    "name": ""
+    "owner": "muzbox",
+    "name": "https://github.com/MineGeotech/gtechtools"
   },
   "windowsStoreConfig": {
-    "packageName": ""
+    "packageName": "gtechtools"
   }
 };
