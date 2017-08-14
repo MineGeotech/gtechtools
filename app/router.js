@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('convert-files');
+  this.route('convert-files', { path: '/convert-files/:file_path' });
 });
 
 export default Router;

@@ -1,1 +1,5 @@
-{{yield}}
+    <div class="pane-group">
+      <div class="pane">{{side-bar model=model.sideBarDirectory}}</div>
+      <div class="pane"> {{file-list files=model.currentDirectory}}</div>
+      <div class="pane">Working Area</div>
+    </div>

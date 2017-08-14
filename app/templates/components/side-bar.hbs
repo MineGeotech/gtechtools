@@ -1,1 +1,11 @@
-{{yield}}
+ <ul class="list-group">
+        {{#each model as |file|}}
+          {{#if file.isDirectory }}
+          <li class="list-group-item">
+              <div class="media-body">
+                   {{#link-to "convert-files" file.filePath class="p"}}{{file.base}}{{/link-to}}
+              </div>
+          </li>
+          {{/if}}
+        {{/each}}
+</ul>

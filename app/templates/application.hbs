@@ -1,6 +1,11 @@
-<div class="content">
-  {{nav-bar}}
-  <div class="container-fluid">
-    {{outlet}}
+<div class="window">
+  <!-- .toolbar-header sits at the top of your app -->
+    {{nav-bar}}
+
+  <!-- Your app's content goes inside .window-content -->
+  <div class="window-content">
+    <div class="padded-more">
+      {{outlet}}
+    </div>
   </div>
 </div>
