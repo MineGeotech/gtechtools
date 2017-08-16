@@ -26,9 +26,11 @@ export default Ember.Service.extend({
             console.log(fpath.ext);
             switch (fpath.ext) {
                 case '.str':
-                    this.importSurpacStr(filePath);
-                    resolve(self.dataFile);
-                    return self.dataFile;
+                    return this.importSurpacStr(filePath).then((df)=>{
+                    resolve(df);
+                    return df;
+                    })
+                  
                     
                 case '.csv':
 
@@ -45,6 +47,7 @@ export default Ember.Service.extend({
     },
 
     importSurpacStr(filePath) {
+        var callback = (resolve, reject) => {
         var self = this;
         fs.readFile(filePath, function (err, filedata) {
             if (err) {
@@ -84,8 +87,12 @@ export default Ember.Service.extend({
                     sOrder = 1;
                 }
             }
+            resolve(self.dataFile);
+            return self.dataFile;
 
         })
+    }
+    return new Promise(callback);
 
     },
     addpoly(points) {

@@ -21,7 +21,6 @@ export default Ember.Component.extend({
             self = this;
             var pFile = path.parse(file);
             this.get('importFile').import(file).then(dataFile=>{
-              
                 self.get('exportFile').export(dataFile,self.savePath,pFile.name);
             });
             },
@@ -43,7 +42,6 @@ export default Ember.Component.extend({
                     return;
                 } else {
                     let parsedPath = path.parse(folderPaths);
-                    console.log(parsedPath);
                     this.savePath= parsedPath.dir;
                     this.readDir(parsedPath.dir);
 
