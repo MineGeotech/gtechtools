@@ -1,6 +1,9 @@
 
-<button id="party" onclick={{action 'selectDir'}}>Open Directory</button>
-<div class="table-responsive">
+
+<div class="padded">
+<button id="party" class="btn btn-primary" onclick={{action 'selectDir'}}>Open Directory</button>
+</div>
+<div class="table-responsive padded">
   <table class="table table-striped table-hover table-sm">
     <thead class="thead-default">
       <tr>
@@ -15,11 +18,13 @@
         {{#if file.isDirectory}}
         <td><div class="folder-icon"></div></td>
          <td><a href="" {{action "openDir" file.filePath}}>{{file.base}}</a></td>
+           <td>{{file.fileExt}}</td>
         {{else}}
         <td></td>
         <td><a href="" {{action "openFile" file.filePath}}>{{file.base}}</a></td>
+          <td>{{file.fileExt}}</td>
         {{/if}}
-        <td>{{file.fileType}}</td>
+      
       </tr>
       {{/each}}
     </tbody>

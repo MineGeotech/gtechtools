@@ -1,0 +1,55 @@
+<div class="padded">
+    <div>
+        <h2>
+            File Name: {{pFile.name}}
+        </h2>
+    </div>
+    <div>
+        File Directory Path: {{pFile.dir}}
+    </div>
+    <div>
+        File Type: {{pFile.ext}}
+    </div>
+</div>
+<div class="padded">
+    <div>
+        Polygons: {{dataFile.polygons.length}}
+      
+    </div>
+    <div>
+        Polylines: {{dataFile.polylines.length}}
+    </div>
+    <div>
+        Points: {{dataFile.points.length}}
+    </div>
+</div>
+
+<div class="padded">
+    <form>
+        <div class="form-group">
+            <label>Output Format</label>
+            <select id="outputFormat" class="form-control">
+    <option>Surfer (.bln)</option>
+   </select>
+        </div>
+        <div class="form-group">
+            <label>Output Directory</label>
+            <input type="text" class="form-control" placeholder="{{savePath}}">
+        </div>
+        <div class="form-group">
+            <label>Decimal Places</label>
+            <input id="decimalPlaces" type="number" class="form-control" placeholder="2">
+        </div>
+        <div class="form-group">
+            <label>Coordinates</label>
+            <select id="coordinates" class="form-control">
+                <option value="XY">XY</option>
+                <option value="YX">YX</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-form btn-default">Cancel</button>
+            <button type="submit" {{action "exportFile"}} class="btn btn-form btn-primary">Export</button>
+        </div>
+    </form>
+</div>

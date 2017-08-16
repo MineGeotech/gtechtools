@@ -7,10 +7,12 @@ export default Ember.Route.extend({
     const filePath = params.file_path === 'root' ? window.process.env['HOME'] : params.file_path;
     let sideBarDirectory = this.get('readDirectory').path();
     let currentDirectory = this.get('readDirectory').path(filePath);
+    let currentFile = 'testfile.dd';
 
     return Ember.RSVP.hash({
       sideBarDirectory,
       currentDirectory,
+      currentFile,
       filePath: formatFilePath(filePath)
     });
   }
