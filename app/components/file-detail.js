@@ -23,7 +23,7 @@ export default Ember.Component.extend({
         //this.model.addObserver('currentFile',this.fileChanged);
 
     },
-    modelChanged(sender, key, value, rev) {
+    modelChanged() {
 
         var cf = this.get('model.currentFile');
 
@@ -31,8 +31,6 @@ export default Ember.Component.extend({
         this.set('pFile', path.parse(cf));
         this.set('savePath', this.pFile.dir);
         if (this.filePath != cf) {
-            self = this;
-
             this.set('filePath', cf);
             this.set('dataFile', {
                 points: [],

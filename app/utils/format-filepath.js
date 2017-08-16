@@ -1,5 +1,3 @@
-import Ember from 'ember';
-
 export function formatFilePath(filePath) {
   var parts = filePath
               .replace(/\\/g, '/')

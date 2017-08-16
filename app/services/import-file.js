@@ -15,7 +15,7 @@ export default Ember.Service.extend({
 
     import(filePath) {
        
-        var callback = (resolve, reject) => {
+        var callback = (resolve) => {
             var self = this;
             self.set('dataFile', {
                 points: [],
@@ -23,7 +23,7 @@ export default Ember.Service.extend({
                 polylines: []
             });
             var fpath = path.parse(filePath);
-            console.log(fpath.ext);
+           
             switch (fpath.ext) {
                 case '.str':
                     return this.importSurpacStr(filePath).then((df)=>{
@@ -47,11 +47,11 @@ export default Ember.Service.extend({
     },
 
     importSurpacStr(filePath) {
-        var callback = (resolve, reject) => {
+        var callback = (resolve) => {
         var self = this;
         fs.readFile(filePath, function (err, filedata) {
             if (err) {
-                return console.error(err);
+                throw err;
             }
             var csv = filedata.toString();
             var allTextLines = csv.split(/\r\n|\n/);

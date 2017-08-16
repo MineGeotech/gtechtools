@@ -9,11 +9,11 @@ export default Ember.Service.extend({
         var filePath = path.join(fpath,filename+'.bln');
         fs.writeFile(filePath,textFile,(err)=>{
             if(err)throw err;
-            console.log("The file ("+filePath+") was saved");
+            
         })
     },
     createBLN(file,decimalPlaces){
-        self = this;
+        var self = this;
         // Write out polygons first
         var polygons = file.polygons;
         //var csvContent = "data:text/csv;charset=utf-8,\n";
@@ -59,11 +59,11 @@ export default Ember.Service.extend({
         var points = file.points;
         points.forEach(function(point) {
                     
-            var count = polyline.length;
+            
             var headerString = "1\n";
             csvContent+=headerString;
             var dataString = [self.roundNumber(point.x,decimalPlaces),self.roundNumber(point.y,decimalPlaces)].join(",");
-            csvContent += index < polyline.length ? dataString+ "\n" : dataString;
+            csvContent += dataString + "\n" ;
         
         }, this);
 

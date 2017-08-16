@@ -1,5 +1,4 @@
 import Ember from 'ember';
-const { shell } = window.require('electron');
 const { dialog } = window.require('electron').remote;
 const path = window.require('path');
 
@@ -17,7 +16,7 @@ export default Ember.Component.extend({
     actions: {
         openFile(file) {
             //shell.openItem(file);
-            self = this;
+            var self = this;
             Ember.set(self.model,'currentFile', file);
          
             },
@@ -35,7 +34,7 @@ export default Ember.Component.extend({
 
                 // folderPaths is an array that contains all the selected paths
                 if (folderPaths === undefined) {
-                    console.log("No destination folder selected");
+                    //console.log("No destination folder selected");
                     return;
                 } else {
                     let parsedPath = path.parse(folderPaths);
