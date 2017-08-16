@@ -50,6 +50,7 @@ export default Ember.Component.extend({
     readDir(path) {
         this._super(...arguments);
         this.set('fileList', []);
+        
         if (path == null) {
             this.get('readDirectory').path().then(files => {
 

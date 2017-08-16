@@ -2,6 +2,7 @@ import Ember from 'ember';
 const Promise = Ember.RSVP.Promise;
 const fs = window.require('fs');
 const path = window.require('path');
+const DxfParser = window.require('dxf-parser');
 
 export default Ember.Service.extend({
     dataFile: null,
@@ -33,9 +34,18 @@ export default Ember.Service.extend({
                   
                     
                 case '.csv':
-
+                return this.importDatamineCSV(filePath).then((df)=>{
+                    resolve(df);
+                    return df;
+                    })
                     break;
                 case '.dxf':
+                return this.importSurpacDXF(filePath).then((df)=>{
+                    resolve(df);
+                    return df;
+                    })
+
+
                     break;
 
                 default:
@@ -45,6 +55,99 @@ export default Ember.Service.extend({
         }
         return new Promise(callback);
     },
+    importDatamineCSV(filePath){
+        var callback = (resolve) => {
+            var self = this;
+            fs.readFile(filePath, function (err, filedata) {
+                if (err) {
+                    throw err;
+                }
+                var csv = filedata.toString();
+                var allTextLines = csv.split(/\r\n|\n/);
+                var lines = [];
+                for (var i = 0; i < allTextLines.length; i++) {
+                    var data = allTextLines[i].split(',');
+                    var tarr = [];
+                    for (var j = 0; j < data.length; j++) {
+                        tarr.push(data[j]);
+                    }
+                    lines.push(tarr);
+    
+                }
+              
+                var points = [];
+                const xColumn = 0;
+                const yColumn = 1;
+                const zColumn = 2;
+                const oColumn = 3;
+                const pColumn = 4;
+                var pvalue = lines[1][pColumn];
+                for (var l = 1; l < lines.length; l++) {
+                    if (pvalue==lines[l][pColumn]) {
+                        points.push(
+                            {
+                                x: Number(lines[l][xColumn]),
+                                y: Number(lines[l][yColumn]),
+                                z: Number(lines[l][zColumn]),
+                                sOrder:Number(lines[l][oColumn])
+                            });
+                       
+                    } else {
+                        self.addpoly(points);
+                        pvalue = lines[l][pColumn]; 
+                        points = [];
+                       
+                    }
+                }
+        
+                resolve(self.dataFile);
+                return self.dataFile;
+    
+            })
+        }
+        return new Promise(callback);
+    },
+    importSurpacDXF(filePath){
+        var callback = (resolve) => {
+            var self = this;
+            fs.readFile(filePath, function (err, filedata) {
+                if (err) {
+                    throw err;
+                }
+                var fileText = filedata.toString();
+
+
+                var parser = new DxfParser();
+                try {
+                    var dxf = parser.parseSync(fileText);
+                    console.log(dxf);
+
+                    dxf.entities.forEach(function(entity) {
+                        self.addpoly(entity.vertices);
+                        
+                        
+                    }, this);    
+
+
+                }catch(err) {
+                    return console.error(err.stack);
+                }
+
+
+
+
+                console.log(self.dataFile);
+
+                resolve(self.dataFile);
+                return self.dataFile;
+    
+            })
+        }
+        return new Promise(callback);
+    }
+
+
+    ,
 
     importSurpacStr(filePath) {
         var callback = (resolve) => {
