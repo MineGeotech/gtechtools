@@ -34,15 +34,21 @@
         </div>
         <div class="form-group">
             <label>Output Directory</label>
-            <input type="text" class="form-control" placeholder="{{savePath}}">
+            <div >
+            {{input type="text" value=savePath class="form-control"}}
+            </div>
+            
         </div>
         <div class="form-group">
             <label>Decimal Places</label>
-            <input id="decimalPlaces" type="number" class="form-control" placeholder="2">
+             <div >
+            {{input type="number" value=decimalPlaces class="form-control"}}
+            </div>
+           
         </div>
         <div class="form-group">
             <label>Coordinates</label>
-            <select id="coordinates" class="form-control">
+            <select id="coordinates" {{action "selectCoord" value=target.value}} class="form-control">
                 <option value="XY">XY</option>
                 <option value="YX">YX</option>
             </select>

@@ -8,6 +8,7 @@ export default Ember.Component.extend({
     savePath: '',
     dataFile: '',
     decimalPlaces: 2,
+    coordSettings:'XY',
     importFile: Ember.inject.service(),
     exportFile: Ember.inject.service(),
 
@@ -50,6 +51,9 @@ export default Ember.Component.extend({
     actions: {
         exportFile() {
             this.get('exportFile').export(this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces);
-        }
+        },
+        selectCoord(coord) {
+            this.set('coordSettings', coord);
+          }
     }
 });
