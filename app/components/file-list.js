@@ -5,8 +5,11 @@ const path = window.require('path');
 
 export default Ember.Component.extend({
     fileList: null,
+    savePath:'',
+    
     readDirectory: Ember.inject.service(),
     importFile: Ember.inject.service(),
+    exportFile: Ember.inject.service(),
     init() {
         this._super(...arguments);
         this.set('fileList', []);
@@ -15,9 +18,11 @@ export default Ember.Component.extend({
     actions: {
         openFile(file) {
             //shell.openItem(file);
-            console.log(file);
+            self = this;
+            var pFile = path.parse(file);
             this.get('importFile').import(file).then(dataFile=>{
-                console.log(dataFile);
+              
+                self.get('exportFile').export(dataFile,self.savePath,pFile.name);
             });
             },
         openDir(file) {
@@ -38,7 +43,8 @@ export default Ember.Component.extend({
                     return;
                 } else {
                     let parsedPath = path.parse(folderPaths);
-
+                    console.log(parsedPath);
+                    this.savePath= parsedPath.dir;
                     this.readDir(parsedPath.dir);
 
                 }

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 const Promise = Ember.RSVP.Promise;
 const fs = window.require('fs');
-
+const path = window.require('path');
 
 export default Ember.Service.extend({
     dataFile: null,
@@ -14,67 +14,83 @@ export default Ember.Service.extend({
     },
 
     import(filePath) {
-        var self = this;
-        self.set('dataFile', {
-            points: [],
-            polygons: [],
-            polylines: []
-        });
+       
         var callback = (resolve, reject) => {
-            fs.readFile(filePath, function (err, filedata) {
-                if (err) {
-                    return console.error(err);
-                }
-
-                    var csv = filedata.toString();
-                    var allTextLines = csv.split(/\r\n|\n/);
-                    var lines = [];
-                    for (var i = 0; i < allTextLines.length; i++) {
-                        var data = allTextLines[i].split(',');
-                        var tarr = [];
-                        for (var j = 0; j < data.length; j++) {
-                            tarr.push(data[j]);
-                        }
-                        lines.push(tarr);
-
-                    }
-                    var points = [];
-                    var sOrder = 1;
-                    const xColumn = 1;
-                    const yColumn = 2;
-                    const zColumn = 3;
-
-                    for (var l = 0; l < lines.length; l++) {
-                        if (!isNaN(Number(lines[l][0])) && Number(lines[l][0]) > 0) {
-                            points.push(
-                                {
-                                    x: Number(lines[l][xColumn]),
-                                    y: Number(lines[l][yColumn]),
-                                    z: Number(lines[l][zColumn]),
-                                    sOrder
-                                });
-                            sOrder++;
-                        } else {
-                            self.addpoly(points);
-                            points = [];
-                            sOrder = 1;
-                        }
-                    }
-
+            var self = this;
+            self.set('dataFile', {
+                points: [],
+                polygons: [],
+                polylines: []
+            });
+            var fpath = path.parse(filePath);
+            console.log(fpath.ext);
+            switch (fpath.ext) {
+                case '.str':
+                    this.importSurpacStr(filePath);
                     resolve(self.dataFile);
                     return self.dataFile;
-                
+                    
+                case '.csv':
 
+                    break;
+                case '.dxf':
+                    break;
 
-            })
+                default:
+
+            }
+            
         }
         return new Promise(callback);
+    },
+
+    importSurpacStr(filePath) {
+        var self = this;
+        fs.readFile(filePath, function (err, filedata) {
+            if (err) {
+                return console.error(err);
+            }
+            var csv = filedata.toString();
+            var allTextLines = csv.split(/\r\n|\n/);
+            var lines = [];
+            for (var i = 0; i < allTextLines.length; i++) {
+                var data = allTextLines[i].split(',');
+                var tarr = [];
+                for (var j = 0; j < data.length; j++) {
+                    tarr.push(data[j]);
+                }
+                lines.push(tarr);
+
+            }
+            var points = [];
+            var sOrder = 1;
+            const xColumn = 1;
+            const yColumn = 2;
+            const zColumn = 3;
+
+            for (var l = 0; l < lines.length; l++) {
+                if (!isNaN(Number(lines[l][0])) && Number(lines[l][0]) > 0) {
+                    points.push(
+                        {
+                            x: Number(lines[l][xColumn]),
+                            y: Number(lines[l][yColumn]),
+                            z: Number(lines[l][zColumn]),
+                            sOrder
+                        });
+                    sOrder++;
+                } else {
+                    self.addpoly(points);
+                    points = [];
+                    sOrder = 1;
+                }
+            }
+
+        })
+
     },
     addpoly(points) {
         // Check the number of points
         const count = points.length;
-       
-        console.log(this.dataFile);
 
         // Check that there is enough points here for a line or polygon
         if (count <= 1) {
