@@ -1,3 +1,5 @@
+
+<button id="party" onclick={{action 'selectDir'}}>Open Directory</button>
 <div class="table-responsive">
   <table class="table table-striped table-hover table-sm">
     <thead class="thead-default">
@@ -5,23 +7,19 @@
         <th></th>
         <th>Name</th>
         <th>Type</th>
-        <th>Size</th>
-        <th>Last Modified</th>
       </tr>
     </thead>
     <tbody>
-      {{#each files as |file|}}
+      {{#each fileList as |file|}}
       <tr>
         {{#if file.isDirectory}}
         <td><div class="folder-icon"></div></td>
-        <td>{{#link-to "convert-files" file.filePath class="nav-link"}}{{file.base}}{{/link-to}}</td>
+         <td><a href="" {{action "openDir" file.filePath}}>{{file.base}}</a></td>
         {{else}}
         <td></td>
         <td><a href="" {{action "openFile" file.filePath}}>{{file.base}}</a></td>
         {{/if}}
         <td>{{file.fileType}}</td>
-        <td>{{file.fileSize}}</td>
-        <td>{{file.mtime}}</td>
       </tr>
       {{/each}}
     </tbody>
