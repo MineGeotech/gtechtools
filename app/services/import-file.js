@@ -120,7 +120,7 @@ export default Ember.Service.extend({
                 var parser = new DxfParser();
                 try {
                     var dxf = parser.parseSync(fileText);
-                    console.log(dxf);
+                 
 
                     dxf.entities.forEach(function(entity) {
                         switch(entity.type){

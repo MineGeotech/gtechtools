@@ -33,8 +33,9 @@
     <form>
         <div class="form-group">
             <label>Output Format</label>
-            <select id="outputFormat" class="form-control">
-    <option>Surfer (.bln)</option>
+            <select id="outputFormat" onchange={{action "selectOutput" value="target.value"}} class="form-control">
+    <option value="bln">Surfer (.bln)</option>
+     <option value="dxf">DXF (.dxf)</option>
    </select>
         </div>
         <div class="form-group">

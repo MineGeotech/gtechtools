@@ -1,16 +1,42 @@
 import Ember from 'ember';
 const fs = window.require('fs');
 const path = window.require('path');
+const jscad = window.require('@jscad/openjscad');
+const csg = window.require('@jscad/csg').CSG;
+
+
 export default Ember.Service.extend({
 
-    export(file, fpath, filename, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines) {
+    export(format,file, fpath, filename, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines) {
         var self = this;
+        switch(format){
+            case 'bln':
         var textFile = self.createBLN(file, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines);
         var filePath = path.join(fpath, filename + '_' + coordSettings + '.bln');
         fs.writeFile(filePath, textFile, { encoding: 'utf-8' }, (err) => {
             if (err) throw err;
 
         })
+        break;
+        case 'dxf':
+            this.createDXF();
+        break;
+    }
+    },
+    createDXF(){
+
+        //const csg = window.require('csg').CSG
+        console.log(csg);
+        var input = csg.cube([1, 1, 1]) // one of many ways to create a CSG object
+        let dxfSerializer = window.require('@jscad/dxf-serializer');
+       
+        var rawData = dxfSerializer.serialize(input);
+        console.log(rawData);
+        //const outputData = jscad.generateOutput('stlb', input);
+        // hurray ,we can now write an stl file from our OpenJsCad script!
+        //fs.writeFileSync('torus.stl', outputData.asBuffer());
+        
+
     },
     createBLN(file, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines) {
         var self = this;
@@ -18,7 +44,7 @@ export default Ember.Service.extend({
         var polygons = file.polygons;
         //var csvContent = "data:text/csv;charset=utf-8,\n";
         var csvContent = '';
-        console.log(exPolygons);
+       
         if (exPolygons) {
             polygons.forEach(function (polygon) {
                 // each polygon is a collection of points

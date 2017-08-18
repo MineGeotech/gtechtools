@@ -2,6 +2,7 @@ import Ember from 'ember';
 const path = window.require('path');
 
 export default Ember.Component.extend({
+    exportFormat:'bln',
     fileType: '',
     filePath: '',
     pfile: '',
@@ -54,12 +55,15 @@ export default Ember.Component.extend({
     actions: {
         exportFile() {
             
-            this.get('exportFile').export(this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces, this.isConvertPolyline,this.coordSettings, this.exportPoints,this.exportPolygons,this.exportPolylines);
+            this.get('exportFile').export(this.exportFormat,this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces, this.isConvertPolyline,this.coordSettings, this.exportPoints,this.exportPolygons,this.exportPolylines);
             this.set('informationNotice','File exported');
         },
         selectCoord(value) {
             this.set('coordSettings', value);
-            console.log(value);
+     
+          },
+          selectOutput(value){
+              this.set('exportFormat',value);
           }
     }
 });
