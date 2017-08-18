@@ -4,7 +4,7 @@ This README outlines the details of collaborating on this Ember Electron applica
 
 This application is used to translate data in mining specific formats into a format that can be read by Surfer geotechnical software (http://www.goldensoftware.com).
 
-The tool was developed for Mine Geotech  http://www.minegeotech.com
+The tool was developed for Mine Geotech  (http://www.minegeotech.com)
 
 ## Prerequisites
 
