@@ -10,6 +10,9 @@ export default Ember.Component.extend({
     decimalPlaces: 2,
     coordSettings:'XY',
     informationNotice:'',
+    exportPolygons:true,
+    exportPolylines:true,
+    exportPoints:true,
     isConvertPolyline:false,
     importFile: Ember.inject.service(),
     exportFile: Ember.inject.service(),
@@ -50,7 +53,8 @@ export default Ember.Component.extend({
     },
     actions: {
         exportFile() {
-            this.get('exportFile').export(this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces, this.isConvertPolyline,this.coordSettings);
+            
+            this.get('exportFile').export(this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces, this.isConvertPolyline,this.coordSettings, this.exportPoints,this.exportPolygons,this.exportPolylines);
             this.set('informationNotice','File exported');
         },
         selectCoord(value) {

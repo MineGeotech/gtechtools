@@ -13,14 +13,14 @@
 </div>
 <div class="padded">
     <div>
-        Polygons: {{dataFile.polygons.length}}
+        {{input type="checkbox"  name="exportPolygons" checked=exportPolygons}} Polygons: {{dataFile.polygons.length}}
       
     </div>
     <div>
-        Polylines: {{dataFile.polylines.length}}
+         {{input type="checkbox"  name="exportPolylines" checked=exportPolylines}} Polylines: {{dataFile.polylines.length}}
     </div>
     <div>
-        Points: {{dataFile.points.length}}
+         {{input type="checkbox"  name="exportPoints" checked=exportPoints}} Points: {{dataFile.points.length}}
     </div>
 </div>
 <div class="padded">

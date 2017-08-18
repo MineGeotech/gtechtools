@@ -115,7 +115,7 @@ export default Ember.Service.extend({
                     throw err;
                 }
                 var fileText = filedata.toString();
-
+             
 
                 var parser = new DxfParser();
                 try {
@@ -123,7 +123,18 @@ export default Ember.Service.extend({
                     console.log(dxf);
 
                     dxf.entities.forEach(function(entity) {
-                        self.addpoly(entity.vertices);
+                        switch(entity.type){
+                            case 'POINT':
+
+                            self.addpoint(entity.position);
+                            break;
+                            case 'POLYLINE':
+
+                            self.addpoly(entity.vertices);
+                            break;
+                        }
+                        
+                        
                         
                         
                     }, this);    
