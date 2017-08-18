@@ -23,6 +23,11 @@
         Points: {{dataFile.points.length}}
     </div>
 </div>
+<div class="padded">
+     <label>
+     {{input type="checkbox"  name="isConvertPolyline" checked=isConvertPolyline}} Convert polylines to polygons (close shape)
+    </label>
+</div>
 
 <div class="padded">
     <form>
@@ -48,14 +53,18 @@
         </div>
         <div class="form-group">
             <label>Coordinates</label>
-            <select id="coordinates" {{action "selectCoord" value=target.value}} class="form-control">
+            <select id="coordinates" onchange={{action "selectCoord" value="target.value"}} class="form-control">
                 <option value="XY">XY</option>
-                <option value="YX">YX</option>
+                <option value="XZ">XZ</option>
+                <option value="YZ">YZ</option>
             </select>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-form btn-default">Cancel</button>
+           
             <button type="submit" {{action "exportFile"}} class="btn btn-form btn-primary">Export</button>
+        </div>
+        <div>
+            <label>{{informationNotice}}</label>
         </div>
     </form>
 </div>

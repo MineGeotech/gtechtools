@@ -24,9 +24,10 @@ export default Ember.Component.extend({
             this.readDir(file);
         },
         selectDir() {
-            dialog.showSaveDialog({
-                title: "Select a folder",
+            dialog.showOpenDialog({
+                title: "Select a folder",                              
                 properties: ["openDirectory"]
+                
             }, (folderPaths) => {
                 // clear out existing files
                 this._super(...arguments);
@@ -37,9 +38,8 @@ export default Ember.Component.extend({
                     //console.log("No destination folder selected");
                     return;
                 } else {
-                    let parsedPath = path.parse(folderPaths);
-                    
-                    this.readDir(parsedPath.dir);
+                 
+                    this.readDir(folderPaths[0]);
 
                 }
             });

@@ -3,16 +3,16 @@ const fs = window.require('fs');
 const path = window.require('path');
 export default Ember.Service.extend({
 
-    export(file,fpath,filename,decimalPlaces){
+    export(file,fpath,filename,decimalPlaces,convertPolylines,coordSettings){
         var self = this;
-        var textFile = self.createBLN(file,decimalPlaces);
+        var textFile = self.createBLN(file,decimalPlaces,convertPolylines,coordSettings);
         var filePath = path.join(fpath,filename+'.bln');
-        fs.writeFile(filePath,textFile,(err)=>{
+        fs.writeFile(filePath,textFile,{encoding:'utf-8'},(err)=>{
             if(err)throw err;
             
         })
     },
-    createBLN(file,decimalPlaces){
+    createBLN(file,decimalPlaces,convertPolylines,coordSettings){
         var self = this;
         // Write out polygons first
         var polygons = file.polygons;
@@ -25,8 +25,19 @@ export default Ember.Service.extend({
             var headerString = count.toString()+",0\n";
             csvContent+=headerString;
             polygon.forEach(function(infoArray, index){
-                
-                   var dataString = [self.roundNumber(infoArray.x,decimalPlaces),self.roundNumber(infoArray.y,decimalPlaces)].join(",");
+                var dataString = '';
+                   switch(coordSettings){
+                       case 'XY':
+                        dataString = [self.roundNumber(infoArray.x,decimalPlaces),self.roundNumber(infoArray.y,decimalPlaces)].join(",");
+                       break;
+                       case 'XZ':
+                       dataString = [self.roundNumber(infoArray.x,decimalPlaces),self.roundNumber(infoArray.z,decimalPlaces)].join(",");
+                       break;
+                       case 'YZ':
+                       dataString = [self.roundNumber(infoArray.y,decimalPlaces),self.roundNumber(infoArray.z,decimalPlaces)].join(",");
+                       break;
+                   }
+                   
                    csvContent += index < polygon.length ? dataString+ "\n" : dataString;
                 
                 }); 
@@ -42,15 +53,47 @@ export default Ember.Service.extend({
             // each polyline is a collection of points
 
             var count = polyline.length;
+            if(convertPolylines) count++;
             var headerString = count.toString()+"\n";
             csvContent+=headerString;
             polyline.forEach(function(infoArray, index){
-                
-                   var dataString = [self.roundNumber(infoArray.x,decimalPlaces),self.roundNumber(infoArray.y,decimalPlaces)].join(",");
+                var dataString = '';
+                switch(coordSettings){
+                    case 'XY':
+
+                     dataString = [self.roundNumber(infoArray.x,decimalPlaces),self.roundNumber(infoArray.y,decimalPlaces)].join(",");
+                    break;
+                    case 'XZ':
+
+                     dataString = [self.roundNumber(infoArray.x,decimalPlaces),self.roundNumber(infoArray.z,decimalPlaces)].join(",");
+                    break;
+                    case 'YZ':
+                    
+                    dataString = [self.roundNumber(infoArray.y,decimalPlaces),self.roundNumber(infoArray.z,decimalPlaces)].join(",");
+                    break;
+                }
+                  
                    csvContent += index < polyline.length ? dataString+ "\n" : dataString;
                 
                 }); 
+            if(convertPolylines){
+                // convert polyline to polygon by duplicateing the last point
+                var dataString = '';
+                switch(coordSettings){
+                    case 'XY':
+                     dataString = [self.roundNumber(polyline[0].x,decimalPlaces),self.roundNumber(polyline[0].y,decimalPlaces)].join(",");
+                    break;
+                    case 'XZ':
+                    dataString = [self.roundNumber(polyline[0].x,decimalPlaces),self.roundNumber(polyline[0].z,decimalPlaces)].join(",");
+                    break;
+                    case 'YZ':
+                    dataString = [self.roundNumber(polyline[0].y,decimalPlaces),self.roundNumber(polyline[0].z,decimalPlaces)].join(",");
+                    break;
+                }
+                
+                csvContent +=  dataString+ "\n";
 
+            }
 
         }, this);
 
@@ -62,7 +105,19 @@ export default Ember.Service.extend({
             
             var headerString = "1\n";
             csvContent+=headerString;
-            var dataString = [self.roundNumber(point.x,decimalPlaces),self.roundNumber(point.y,decimalPlaces)].join(",");
+            var dataString = '';
+            switch(coordSettings){
+                case 'XY':
+                 dataString = [self.roundNumber(point.x,decimalPlaces),self.roundNumber(point.y,decimalPlaces)].join(",");
+                break;
+                case 'XZ':
+                dataString = [self.roundNumber(point.x,decimalPlaces),self.roundNumber(point.z,decimalPlaces)].join(",");
+                break;
+                case 'YZ':
+                dataString = [self.roundNumber(point.y,decimalPlaces),self.roundNumber(point.z,decimalPlaces)].join(",");
+                break;
+            }
+            
             csvContent += dataString + "\n" ;
         
         }, this);

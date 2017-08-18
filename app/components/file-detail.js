@@ -9,6 +9,8 @@ export default Ember.Component.extend({
     dataFile: '',
     decimalPlaces: 2,
     coordSettings:'XY',
+    informationNotice:'',
+    isConvertPolyline:false,
     importFile: Ember.inject.service(),
     exportFile: Ember.inject.service(),
 
@@ -26,7 +28,7 @@ export default Ember.Component.extend({
     modelChanged() {
 
         var cf = this.get('model.currentFile');
-
+        this.set('informationNotice','');
         if (cf == null || cf == '') return;
         this.set('pFile', path.parse(cf));
         this.set('savePath', this.pFile.dir);
@@ -48,10 +50,12 @@ export default Ember.Component.extend({
     },
     actions: {
         exportFile() {
-            this.get('exportFile').export(this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces);
+            this.get('exportFile').export(this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces, this.isConvertPolyline,this.coordSettings);
+            this.set('informationNotice','File exported');
         },
-        selectCoord(coord) {
-            this.set('coordSettings', coord);
+        selectCoord(value) {
+            this.set('coordSettings', value);
+            console.log(value);
           }
     }
 });
