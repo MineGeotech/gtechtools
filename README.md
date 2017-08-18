@@ -6,6 +6,10 @@ This application is used to translate data in mining specific formats into a for
 
 The tool was developed for Mine Geotech  (http://www.minegeotech.com)
 
+## Installers
+
+You can download a pre-build windows installer from the windows installer directory
+
 ## Prerequisites
 
 You will need the following things properly installed on your computer.
