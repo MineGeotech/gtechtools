@@ -1,9 +1,6 @@
 import Ember from 'ember';
 const fs = window.require('fs');
 const path = window.require('path');
-const jscad = window.require('@jscad/openjscad');
-const csg = window.require('@jscad/csg').CSG;
-
 
 export default Ember.Service.extend({
 
@@ -19,22 +16,294 @@ export default Ember.Service.extend({
         })
         break;
         case 'dxf':
-            this.createDXF();
+            var textFile = this.createDXF(file, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines);
+            var filePath = path.join(fpath, filename + '_' + coordSettings + '.dxf');
+            fs.writeFile(filePath, textFile, { encoding: 'utf-8' }, (err) => {
+                if (err) throw err;
+    
+            })
         break;
     }
     },
-    createDXF(){
+    createDXF(file, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines){
 
-        //const csg = window.require('csg').CSG
-        console.log(csg);
-        var input = csg.cube([1, 1, 1]) // one of many ways to create a CSG object
-        let dxfSerializer = window.require('@jscad/dxf-serializer');
-       
-        var rawData = dxfSerializer.serialize(input);
-        console.log(rawData);
-        //const outputData = jscad.generateOutput('stlb', input);
-        // hurray ,we can now write an stl file from our OpenJsCad script!
-        //fs.writeFileSync('torus.stl', outputData.asBuffer());
+        var self = this;
+        // Write out polygons first
+        var polygons = file.polygons;
+        
+        
+        var csvContent = '';
+
+        // write out the header information
+
+        csvContent += '999' + "\n";
+        csvContent += 'DXF Polyline converted for Surfer' + "\n";
+        csvContent += '0' + "\n";
+        csvContent += 'SECTION' + "\n";
+        csvContent += '2' + "\n";
+        csvContent += 'ENTITIES' + "\n";
+        csvContent += '0' + "\n";
+
+        if (exPolygons) {
+            polygons.forEach(function (polygon) {
+                // each polygon is a collection of points
+                // first and last the same
+
+                
+                csvContent += 'POLYLINE' + "\n";
+                csvContent += '8' + "\n";
+                csvContent += '0' + "\n";
+                csvContent += '100' + "\n";
+                csvContent += 'AcDb3dPolyline' + "\n";  
+
+                if(polygon.color!=null){
+                    csvContent += '420' + "\n";
+                    csvContent += polygon.color + "\n"; 
+                }
+
+                csvContent += '66' + "\n"; //Obsolete; formerly an “entities follow flag” (optional; ignore if present)
+                csvContent += '1' + "\n";
+                csvContent += '70' + "\n"; //Polyline Flag  
+                csvContent += '8' + "\n"; //8 this is a 3D polyline
+                csvContent += '0' + "\n";
+
+              
+                polygon.forEach(function (infoArray, index) {
+                    
+                    csvContent += 'VERTEX' + "\n";
+                    csvContent += '8' + "\n";
+                    csvContent += '0' + "\n";
+                    
+
+                    switch (coordSettings) {
+                        case 'XY':
+                            
+                            csvContent += '10' + "\n";
+                            csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                            csvContent += '20' + "\n";
+                            csvContent += self.roundNumber(infoArray.y, decimalPlaces) + "\n";
+                            csvContent += '30' + "\n";
+                            csvContent += '0' + "\n";
+                            csvContent += '70' + "\n";
+                            csvContent += '32' + "\n";
+                            csvContent += '0' + "\n";
+                           break;
+                        case 'XZ':
+                            csvContent += '10' + "\n";
+                            csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                            csvContent += '20' + "\n";
+                            csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                            csvContent += '30' + "\n";
+                            csvContent += '0' + "\n";
+                            csvContent += '70' + "\n";
+                            csvContent += '32' + "\n";
+                            csvContent += '0' + "\n";
+                          break;
+                        case 'YZ':
+                            csvContent += '10' + "\n";
+                            csvContent += self.roundNumber(infoArray.Y, decimalPlaces).toString() + "\n";
+                            csvContent += '20' + "\n";
+                            csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                            csvContent += '30' + "\n";
+                            csvContent += '0' + "\n";
+                            csvContent += '70' + "\n";
+                            csvContent += '32' + "\n";
+                            csvContent += '0' + "\n";
+                           break;
+                    }
+
+                    
+
+                });
+                csvContent += 'SEQEND' + "\n";
+                csvContent += '0' + "\n";
+
+
+            }, this);
+
+        }
+        if (exPolylines) {
+            // Write out polylines next
+            var polylines = file.polylines;
+            //var csvContent = "data:text/csv;charset=utf-8,\n";
+
+            polylines.forEach(function (polyline) {
+                // each polyline is a collection of points
+
+                csvContent += 'POLYLINE' + "\n";
+                csvContent += '8' + "\n";
+                csvContent += '0' + "\n";
+                csvContent += '100' + "\n";
+                csvContent += 'AcDb3dPolyline' + "\n";   
+                if(polyline.color!=null){
+                    csvContent += '420' + "\n";
+                    csvContent += polyline.color + "\n"; 
+                }
+                csvContent += '66' + "\n";
+                csvContent += '1' + "\n";
+                csvContent += '70' + "\n";
+                csvContent += '8' + "\n";
+                csvContent += '0' + "\n";
+
+                polyline.forEach(function (infoArray, index) {
+                    csvContent += 'VERTEX' + "\n";
+                    csvContent += '8' + "\n";
+                    csvContent += '0' + "\n";
+                    switch (coordSettings) {
+                        case 'XY':
+                        
+                        csvContent += '10' + "\n";
+                        csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                        csvContent += '20' + "\n";
+                        csvContent += self.roundNumber(infoArray.y, decimalPlaces) + "\n";
+                        csvContent += '30' + "\n";
+                        csvContent += '0' + "\n";
+                        csvContent += '70' + "\n";
+                        csvContent += '32' + "\n";
+                        csvContent += '0' + "\n";
+                       break;
+                    case 'XZ':
+                        csvContent += '10' + "\n";
+                        csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                        csvContent += '20' + "\n";
+                        csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                        csvContent += '30' + "\n";
+                        csvContent += '0' + "\n";
+                        csvContent += '70' + "\n";
+                        csvContent += '32' + "\n";
+                        csvContent += '0' + "\n";
+                      break;
+                    case 'YZ':
+                        csvContent += '10' + "\n";
+                        csvContent += self.roundNumber(infoArray.Y, decimalPlaces).toString() + "\n";
+                        csvContent += '20' + "\n";
+                        csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                        csvContent += '30' + "\n";
+                        csvContent += '0' + "\n";
+                        csvContent += '70' + "\n";
+                        csvContent += '32' + "\n";
+                        csvContent += '0' + "\n";
+                       break;
+                    }
+
+                    
+
+                });
+                if (convertPolylines) {
+                    // convert polyline to polygon by duplicateing the last point
+                    
+                    switch (coordSettings) {
+                        case 'XY':
+                        
+                        csvContent += '10' + "\n";
+                        csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                        csvContent += '20' + "\n";
+                        csvContent += self.roundNumber(infoArray.y, decimalPlaces) + "\n";
+                        csvContent += '30' + "\n";
+                        csvContent += '0' + "\n";
+                        csvContent += '70' + "\n";
+                        csvContent += '32' + "\n";
+                        csvContent += '0' + "\n";
+                       break;
+                    case 'XZ':
+                        csvContent += '10' + "\n";
+                        csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                        csvContent += '20' + "\n";
+                        csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                        csvContent += '30' + "\n";
+                        csvContent += '0' + "\n";
+                        csvContent += '70' + "\n";
+                        csvContent += '32' + "\n";
+                        csvContent += '0' + "\n";
+                      break;
+                    case 'YZ':
+                        csvContent += '10' + "\n";
+                        csvContent += self.roundNumber(infoArray.Y, decimalPlaces).toString() + "\n";
+                        csvContent += '20' + "\n";
+                        csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                        csvContent += '30' + "\n";
+                        csvContent += '0' + "\n";
+                        csvContent += '70' + "\n";
+                        csvContent += '32' + "\n";
+                        csvContent += '0' + "\n";
+                       break;
+                    }
+
+                   
+
+                }
+                csvContent += 'SEQEND' + "\n";
+                csvContent += '0' + "\n";
+
+            }, this);
+        }
+        if (exPoints) {
+            // write out the points
+
+            var points = file.points;
+            points.forEach(function (point) {
+
+
+                csvContent += 'POINT' + "\n";
+                csvContent += '8' + "\n";
+                csvContent += '0' + "\n";
+                csvContent += '100' + "\n";
+                csvContent += 'AcDbPoint' + "\n";  
+                if(polyline.point!=null){
+                    csvContent += '420' + "\n";
+                    csvContent += polyline.point + "\n"; 
+                }        
+                csvContent += '0' + "\n";
+                switch (coordSettings) {
+                    case 'XY':
+                    
+                    csvContent += '10' + "\n";
+                    csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                    csvContent += '20' + "\n";
+                    csvContent += self.roundNumber(infoArray.y, decimalPlaces) + "\n";
+                    csvContent += '30' + "\n";
+                    csvContent += '0' + "\n";
+                    csvContent += '70' + "\n";
+                    csvContent += '32' + "\n";
+                    csvContent += '0' + "\n";
+                   break;
+                case 'XZ':
+                    csvContent += '10' + "\n";
+                    csvContent += self.roundNumber(infoArray.x, decimalPlaces).toString() + "\n";
+                    csvContent += '20' + "\n";
+                    csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                    csvContent += '30' + "\n";
+                    csvContent += '0' + "\n";
+                    csvContent += '70' + "\n";
+                    csvContent += '32' + "\n";
+                    csvContent += '0' + "\n";
+                  break;
+                case 'YZ':
+                    csvContent += '10' + "\n";
+                    csvContent += self.roundNumber(infoArray.Y, decimalPlaces).toString() + "\n";
+                    csvContent += '20' + "\n";
+                    csvContent += self.roundNumber(infoArray.z, decimalPlaces) + "\n";
+                    csvContent += '30' + "\n";
+                    csvContent += '0' + "\n";
+                    csvContent += '70' + "\n";
+                    csvContent += '32' + "\n";
+                    csvContent += '0' + "\n";
+                   break;
+                }
+
+                csvContent += 'SEQEND' + "\n";
+                csvContent += '0' + "\n";
+
+            }, this);
+        }
+
+        csvContent += 'ENDSEC' + "\n";
+        csvContent += '0' + "\n";
+        csvContent += 'EOF' + "\n";
+
+        return csvContent;
+        
+     
         
 
     },

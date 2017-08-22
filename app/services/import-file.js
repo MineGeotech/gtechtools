@@ -120,17 +120,17 @@ export default Ember.Service.extend({
                 var parser = new DxfParser();
                 try {
                     var dxf = parser.parseSync(fileText);
-                 
+                    console.log(dxf);
 
                     dxf.entities.forEach(function(entity) {
                         switch(entity.type){
                             case 'POINT':
 
-                            self.addpoint(entity.position);
+                            self.addpoint(entity.position,entity.color);
                             break;
                             case 'POLYLINE':
 
-                            self.addpoly(entity.vertices);
+                            self.addpoly(entity.vertices,entity.color);
                             break;
                         }
                         
@@ -209,7 +209,7 @@ export default Ember.Service.extend({
     return new Promise(callback);
 
     },
-    addpoly(points) {
+    addpoly(points,color) {
         // Check the number of points
         const count = points.length;
 
@@ -217,7 +217,7 @@ export default Ember.Service.extend({
         if (count <= 1) {
             if (count == 1) {
                 // this is a point add it to the points
-                this.addpoint(points[0]);
+                this.addpoint(points[0],color);
 
             }
             // there are no points. exit function
@@ -226,10 +226,12 @@ export default Ember.Service.extend({
         }
 
         // Determine if this is a polygon or polyline
-
+        if(color !=null ){
+            points.color = color;
+            }
         if (this.checkSameXYZ(points[0], points[points.length - 1])) {
             // Polygon
-
+           
 
             this.dataFile.polygons.push(points);
 
@@ -238,9 +240,11 @@ export default Ember.Service.extend({
             this.dataFile.polylines.push(points);
         }
     },
-    addpoint(point) {
+    addpoint(point,color) {
         //TODO: Add some validation code
-
+        if(color !=null ){
+            point.color = color;
+            }
         this.dataFile.points.push(point);
     },
     checkSameXYZ(p1, p2) {
