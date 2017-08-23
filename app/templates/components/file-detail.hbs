@@ -39,6 +39,7 @@
 
     </div>
 </div>
+
 <div class="row">
     <div class="col-2">
         <label>Output Directory</label>
@@ -50,6 +51,11 @@
 
     </div>
 
+</div>
+<div class="row">
+    <div class="col">
+        <button type="submit" {{action "exportFiles"}} class="btn btn-primary">Export All Files</button>
+    </div>
 </div>
 </div>
 <div class="row">
@@ -83,7 +89,7 @@
         </table>
     </div>
 </div>
-<div class="card">
+<div class="container card">
 <div class="padded">
     <div>
         <h2>
@@ -152,7 +158,11 @@
      {{input type="checkbox"  name="isConvertPolyline" checked=dataFile.isConvertPolyline}} Convert polylines to polygons (close shape)
     </label>
 </div>
-<button type="submit" {{action "exportFile"}} class="btn btn-form btn-primary">Export Single File</button>
+<div class="row padded ">
+    <div class="col align-self-end">
+        <button type="submit" {{action "exportFile"}} class="btn btn-primary">Export Single File</button>
+    </div>
+</div>
 
 </div>
 

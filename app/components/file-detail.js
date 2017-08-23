@@ -69,8 +69,16 @@ export default Ember.Component.extend({
     actions: {
         exportFile() {
             
-            this.get('exportFile').export(this.exportFormat,this.dataFile, this.savePath, this.pFile.name, this.decimalPlaces, this.isConvertPolyline,this.coordSettings, this.exportPoints,this.exportPolygons,this.exportPolylines);
+            this.get('exportFile').export(this.dataFile, this.savePath);
             this.set('informationNotice','File exported');
+        },
+        exportFiles() {
+            var self = this;
+            this.get('dataFiles').forEach(function(dataFile){
+                self.get('exportFile').export(dataFile, self.savePath);
+            })
+            
+            this.set('informationNotice','Files exported');
         },
         selectCoord(value) {
             this.set('coordSettings', value);
