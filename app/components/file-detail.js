@@ -67,16 +67,24 @@ export default Ember.Component.extend({
 
     },
     actions: {
+        clearFiles(){
+            this.set('dataFiles',[]);
+            this.set('dataFile','');
+        },
         exportFile() {
             
             this.get('exportFile').export(this.dataFile, this.savePath);
+         
+            this.set('dataFile','');
             this.set('informationNotice','File exported');
         },
         exportFiles() {
             var self = this;
             this.get('dataFiles').forEach(function(dataFile){
                 self.get('exportFile').export(dataFile, self.savePath);
-            })
+            });
+            this.set('dataFiles',[]);
+            this.set('dataFile','');
             
             this.set('informationNotice','Files exported');
         },
