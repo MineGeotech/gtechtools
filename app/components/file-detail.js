@@ -7,6 +7,7 @@ export default Ember.Component.extend({
     filePath: '',
     pfile: '',
     savePath: '',
+    dataFiles:[],
     dataFile: '',
     decimalPlaces: 2,
     coordSettings:'XY',
@@ -17,10 +18,13 @@ export default Ember.Component.extend({
     isConvertPolyline:false,
     importFile: Ember.inject.service(),
     exportFile: Ember.inject.service(),
+    outputFormats:['bln','dxf'],
+    coordinateFormats:['XY','XZ','YZ'],
 
     init() {
         this._super(...arguments);
         this.addObserver('model.currentFile', this, 'modelChanged');
+        
         this.set('dataFile', {
             points: [],
             polygons: [],
@@ -45,7 +49,17 @@ export default Ember.Component.extend({
             });
 
             this.get('importFile').import(cf).then(dataFile => {
+                dataFile.name = this.pFile.name;
+                dataFile.ext = this.pFile.ext;
+                dataFile.outputFormat = this.exportFormat;
+                dataFile.decimalPlaces = this.decimalPlaces;
+                dataFile.coordSettings = this.coordSettings;
+                dataFile.exportPolygons = true;
+                dataFile.exportPolylines = true;
+                dataFile.exportPoints = true;
+                dataFile.isConvertPolyline = false;
 
+                this.dataFiles.addObject(dataFile);
                 this.set('dataFile', dataFile);
             });
 
@@ -64,6 +78,14 @@ export default Ember.Component.extend({
           },
           selectOutput(value){
               this.set('exportFormat',value);
+          },
+          selectCoordDataFile(value) {
+            this.set('dataFile.coordSettings', value);
+     
+          },
+          selectOutputDataFile(value){
+              this.set('dataFile.outputFormat',value);
           }
+
     }
 });
