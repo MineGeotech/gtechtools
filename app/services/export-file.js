@@ -27,6 +27,9 @@ export default Ember.Service.extend({
     },
     createDXF(file, decimalPlaces, convertPolylines, coordSettings, exPoints, exPolygons, exPolylines){
 
+        // See DXF reference for dxf codes
+        // http://images.autodesk.com/adsk/files/autocad_2012_pdf_dxf-reference_enu.pdf
+
         var self = this;
         // Write out polygons first
         var polygons = file.polygons;
