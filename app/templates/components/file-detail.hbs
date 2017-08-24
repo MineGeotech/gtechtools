@@ -56,8 +56,8 @@
 </div>
 <div class="row padded">
     <div class="col">
-        <button type="submit" {{action "clearFiles"}} class="btn btn-danger">Clear All Files</button>
-        <button type="submit" {{action "exportFiles"}} class="btn btn-primary">Export All Files</button>
+        <button type="submit" {{action "clearFiles"}} class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i> Clear All Files</button>
+        <button type="submit" {{action "exportFiles"}} class="btn btn-primary"><i class="fa fa-download fa-lg"></i> Export All Files</button>
     </div>
 </div>
 </div>
@@ -72,6 +72,7 @@
                 <th>Points</th>
                 <th>Output Format</th>
                 <th>Coordinates</th>
+                <th></th>
             </thead>
             <tbody>
                 {{#each dataFiles as |file|}}
@@ -85,6 +86,7 @@
                     <td>{{file.points.length}} {{input type="checkbox" name="exportPoints" checked=file.exportPoints}} </td>
                     <td>{{file.outputFormat}}</td>
                     <td>{{file.coordSettings}}</td>
+                    <td><button class="btn btn-info " {{action "editDataFile" file bubbles=false}}><i class="fa fa-edit fa-sm"></i></button><button class="btn btn-danger" {{action "deleteDataFile" file bubbles=false}}><i class="fa fa-trash fa-sm"></i></button> </td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -93,7 +95,7 @@
     </div>
 </div>
 <div class="container card">
-<div class="padded">
+<div >
     <div>
         <h2>
             File Name: {{dataFile.name}}
@@ -163,7 +165,7 @@
 </div>
 <div class="row padded ">
     <div class="col align-self-end">
-        <button type="submit" {{action "exportFile"}} class="btn btn-primary">Export Single File</button>
+        <button type="submit" {{action "exportFile"}} class="btn btn-primary"><i class="fa fa-download fa-lg"></i> Export Single File</button>
     </div>
 </div>
 

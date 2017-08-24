@@ -54,6 +54,7 @@
     "electron-compile": "^6.4.1",
     "electron-protocol-serve": "^1.3.0",
     "ember-bootstrap-4": "^0.1.2",
+    "ember-cli-font-awesome-sass": "^1.0.4",
     "ember-cli-sass": "^7.0.0",
     "ember-truth-helpers": "^1.3.0",
     "junk": "^2.1.0",

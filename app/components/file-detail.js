@@ -20,6 +20,7 @@ export default Ember.Component.extend({
     exportFile: Ember.inject.service(),
     outputFormats:['bln','dxf'],
     coordinateFormats:['XY','XZ','YZ'],
+    exportIndex:0,
 
     init() {
         this._super(...arguments);
@@ -49,6 +50,8 @@ export default Ember.Component.extend({
             });
 
             this.get('importFile').import(cf).then(dataFile => {
+                dataFile.index = this.exportIndex;
+                this.exportIndex++;
                 dataFile.name = this.pFile.name;
                 dataFile.ext = this.pFile.ext;
                 dataFile.outputFormat = this.exportFormat;
@@ -101,7 +104,16 @@ export default Ember.Component.extend({
           },
           selectOutputDataFile(value){
               this.set('dataFile.outputFormat',value);
-          }
+          },
+          deleteDataFile(dataFile){
+              
+             this.set('dataFiles',this.dataFiles.filter(df=>df.index!=dataFile.index));
+             this.set( 'dataFile',this.dataFiles[0]);
+          
+          },
+          editDataFile(dataFile){
+            this.set('dataFile',dataFile);
+        }
 
     }
 });
