@@ -1,5 +1,6 @@
 import Ember from 'ember';
 const path = window.require('path');
+const { dialog } = window.require('electron').remote;
 
 export default Ember.Component.extend({
     exportFormat:'bln',
@@ -113,6 +114,27 @@ export default Ember.Component.extend({
           },
           editDataFile(dataFile){
             this.set('dataFile',dataFile);
+        },
+        selectDir() {
+            dialog.showOpenDialog({
+                title: "Select a folder",                              
+                properties: ["openDirectory"]
+                
+            }, (folderPaths) => {
+                // clear out existing files
+                this._super(...arguments);
+               
+
+                // folderPaths is an array that contains all the selected paths
+                if (folderPaths === undefined) {
+                    //console.log("No destination folder selected");
+                    return;
+                } else {
+                    
+                   
+                    this.set('savePath', folderPaths[0]);
+                }
+            });
         }
 
     }

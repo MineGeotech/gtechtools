@@ -1,176 +1,185 @@
-<div class="container-fluid">
-<div class="jumbotron jumbotron-fluid">
-<div class="row padded">
-    <div class="col">
-    <h1>File Conversion Utility</h1>
-    </div>
-</div>
+<div class="main padded">
+    <div class="row">
+        <div class="col">
+        <div class="card padded">
+            <div class="row">
+                <div class="col">
+                    <h3>File Conversion Utility</h3>
+                </div>
+            </div>
 
-<div class="row padded">
-    <div class="col-2">
-        <label>Output Format</label>
-    </div>
-    <div class="col-4">
-        <select id="outputFormat" onchange={{action "selectOutput" value="target.value" }}>
-    <option value="bln">Surfer (.bln)</option>
-     <option value="dxf">DXF (.dxf)</option>
-   </select>
-    </div>
-    <div class="col-2">
-        <label>Coordinates</label>
-    </div>
-    <div class="col-4">
-        <select id="coordinates" onchange={{action "selectCoord" value="target.value" }}>
+            <div class="row">
+                <div class="col-2">
+                    <label>Output Format</label>
+                </div>
+                <div class="col-4">
+                    <select id="outputFormat" onchange={{action "selectOutput" value="target.value" }}>
+                    <option value="bln">Surfer (.bln)</option>
+                    <option value="dxf">DXF (.dxf)</option>
+                </select>
+                </div>
+                <div class="col-2">
+                    <label>Coordinates</label>
+                </div>
+                <div class="col-4">
+                    <select id="coordinates" onchange={{action "selectCoord" value="target.value" }}>
                 <option value="XY">XY</option>
                 <option value="XZ">XZ</option>
                 <option value="YZ">YZ</option>
             </select>
-    </div>
-</div>
-<div class="row padded">
-    <div class="col-2">
-        <label>Decimal Places</label>
-    </div>
-    <div class="col-4">
-        {{input type="number" value=decimalPlaces }}
-    </div>
-    <div class="col-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <label>Decimal Places</label>
+                </div>
+                <div class="col-4">
+                    {{input type="number" value=decimalPlaces }}
+                </div>
+                <div class="col-2">
 
-    </div>
-    <div class="col-4">
+                </div>
+                <div class="col-4">
 
-    </div>
-</div>
+                </div>
+            </div>
 
-<div class="row padded">
-    <div class="col-2">
-        <label>Output Directory</label>
-    </div>
-    <div class="col-8">
-        {{input type="text" value=savePath }}
-    </div>
-    <div class="col-2">
+            <div class="row ">
+                <div class="col-2">
+                    <label>Output Directory</label>
+                </div>
+                <div class="col-8">
+                    {{input type="text" value=savePath }}
+                
+                     <button id="party" class="btn btn-info btn-sm" onclick={{action 'selectDir'}}><i class="fa fa-folder-open fa-fw" aria-hidden="true"></i></button>
+                </div>
 
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-6">
+                    <button type="submit" {{action "clearFiles"}} class="btn btn-danger btn-sm"><i class="fa fa-trash-o fa-lg"></i> Clear All Files</button>
+                    <button type="submit" {{action "exportFiles"}} class="btn btn-primary btn-sm"><i class="fa fa-download fa-lg"></i> Export All Files</button>
+                </div>
+            </div>
+        </div>
+        </div>
     </div>
-
-</div>
-<div class="row padded">
-    <div class="col">
-        <button type="submit" {{action "clearFiles"}} class="btn btn-danger"><i class="fa fa-trash-o fa-lg"></i> Clear All Files</button>
-        <button type="submit" {{action "exportFiles"}} class="btn btn-primary"><i class="fa fa-download fa-lg"></i> Export All Files</button>
-    </div>
-</div>
-</div>
-<div class="row">
-    <div class="col">
-        <table class="table">
-            <thead>
-                <th>File</th>
-                <th>File Type</th>
-                <th>Polygons</th>
-                <th>Polylines</th>
-                <th>Points</th>
-                <th>Output Format</th>
-                <th>Coordinates</th>
-                <th></th>
-            </thead>
-            <tbody>
-                {{#each dataFiles as |file|}}
-                <tr>
-                    <td>{{file.name}}</td>
-                    <td>{{file.ext}}</td>
-                    <td>{{file.polygons.length}} {{input type="checkbox" name="exportPolygons" checked=file.exportPolygons}}
+    <div class="row">
+        <div class="col padded">
+            <table class="table">
+                <thead>
+                    <th>File</th>
+                    <th>File Type</th>
+                    <th>Polygons</th>
+                    <th>Polylines</th>
+                    <th>Points</th>
+                    <th>Format</th>
+                    <th>Coordinates</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    {{#each dataFiles as |file|}}
+                    <tr>
+                        <td>{{file.name}}</td>
+                        <td>{{file.ext}}</td>
+                        <td>{{file.polygons.length}} {{input type="checkbox" name="exportPolygons" checked=file.exportPolygons}}
                         </td>
-                    <td>{{file.polylines.length}} {{input type="checkbox" name="exportPolylines" checked=file.exportPolylines}}
+                        <td>{{file.polylines.length}} {{input type="checkbox" name="exportPolylines" checked=file.exportPolylines}}
                         </td>
-                    <td>{{file.points.length}} {{input type="checkbox" name="exportPoints" checked=file.exportPoints}} </td>
-                    <td>{{file.outputFormat}}</td>
-                    <td>{{file.coordSettings}}</td>
-                    <td><button class="btn btn-info " {{action "editDataFile" file bubbles=false}}><i class="fa fa-edit fa-sm"></i></button><button class="btn btn-danger" {{action "deleteDataFile" file bubbles=false}}><i class="fa fa-trash fa-sm"></i></button> </td>
-                </tr>
-                {{/each}}
-            </tbody>
+                        <td>{{file.points.length}} {{input type="checkbox" name="exportPoints" checked=file.exportPoints}} </td>
+                        <td>{{file.outputFormat}}</td>
+                        <td>{{file.coordSettings}}</td>
+                        <td><button class="btn btn-info btn-sm " {{action "editDataFile" file bubbles=false}}><i class="fa fa-edit fa-sm"></i></button>
+                            <button class="btn btn-danger btn-sm" {{action "deleteDataFile" file bubbles=false}}><i class="fa fa-trash fa-sm"></i></button>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
 
-        </table>
+            </table>
+        </div>
     </div>
-</div>
-<div class="container card">
-<div >
-    <div>
-        <h2>
-            File Name: {{dataFile.name}}
-        </h2>
-    </div>
-    <div>
-        File Directory Path: {{dataFile.dir}}
-    </div>
-    <div>
-        File Type: {{dataFile.ext}}
-    </div>
-</div>
-<div class="row padded">
-    <div class="col-2">
-        <label>Output Format</label>
-    </div>
-    <div class="col-4">
-        <select onchange={{action (mut dataFile.outputFormat) value="target.value" }}>
+    <div class="row">
+        <div class="col">
+        <div class="card">
+            <div>
+                <div>
+                    <h4>
+                        File Name: {{dataFile.name}}
+                    </h4>
+                </div>
+                <div>
+                    File Directory Path: {{dataFile.dir}}
+                </div>
+                <div>
+                    File Type: {{dataFile.ext}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <label>Output Format</label>
+                </div>
+                <div class="col-4">
+                    <select onchange={{action (mut dataFile.outputFormat) value="target.value" }}>
   {{#each outputFormats as |formatChoice|}}
     <option value={{formatChoice}} selected={{eq dataFile.outputFormat formatChoice}}>{{formatChoice}}</option>
   {{/each}}
 </select>
 
-    </div>
-    <div class="col-2">
-        <label>Coordinates</label>
-    </div>
-    <div class="col-4">
-        <select onchange={{action (mut dataFile.coordSettings) value="target.value" }}>
+                </div>
+                <div class="col-2">
+                    <label>Coordinates</label>
+                </div>
+                <div class="col-4">
+                    <select onchange={{action (mut dataFile.coordSettings) value="target.value" }}>
   {{#each coordinateFormats as |coChoice|}}
     <option value={{coChoice}} selected={{eq dataFile.coordSettings coChoice}}>{{coChoice}}</option>
   {{/each}}
 </select>
 
-    </div>
-</div>
-<div class="row padded">
-    <div class="col-2">
-        <label>Decimal Places</label>
-    </div>
-    <div class="col-4">
-        {{input type="number" value=dataFile.decimalPlaces }}
-    </div>
-    <div class="col-2">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-2">
+                    <label>Decimal Places</label>
+                </div>
+                <div class="col-4">
+                    {{input type="number" value=dataFile.decimalPlaces }}
+                </div>
+                <div class="col-2">
 
-    </div>
-    <div class="col-4">
+                </div>
+                <div class="col-4">
 
-    </div>
-</div>
-<div class="padded">
-    <div>
-        {{input type="checkbox" name="exportPolygons" checked=dataFile.exportPolygons}} Polygons: {{dataFile.polygons.length}}
+                </div>
+            </div>
+            <div>
+                <div>
+                    {{input type="checkbox" name="exportPolygons" checked=dataFile.exportPolygons}} Polygons: {{dataFile.polygons.length}}
 
-    </div>
-    <div>
-        {{input type="checkbox" name="exportPolylines" checked=dataFile.exportPolylines}} Polylines: {{dataFile.polylines.length}}
-    </div>
-    <div>
-        {{input type="checkbox" name="exportPoints" checked=dataFile.exportPoints}} Points: {{dataFile.points.length}}
-    </div>
-</div>
-<div class="padded">
-    <label>
+                </div>
+                <div>
+                    {{input type="checkbox" name="exportPolylines" checked=dataFile.exportPolylines}} Polylines: {{dataFile.polylines.length}}
+                </div>
+                <div>
+                    {{input type="checkbox" name="exportPoints" checked=dataFile.exportPoints}} Points: {{dataFile.points.length}}
+                </div>
+            </div>
+            <div class="">
+                <label>
      {{input type="checkbox"  name="isConvertPolyline" checked=dataFile.isConvertPolyline}} Convert polylines to polygons (close shape)
     </label>
-</div>
-<div class="row padded ">
-    <div class="col align-self-end">
-        <button type="submit" {{action "exportFile"}} class="btn btn-primary"><i class="fa fa-download fa-lg"></i> Export Single File</button>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-4">
+                    <button type="submit" {{action "exportFile"}} class="btn btn-primary btn-sm"><i class="fa fa-download fa-lg"></i> Export Single File</button>
+                </div>
+            </div>
+
+        </div>
+
+
+        <label>{{informationNotice}}</label>
     </div>
 </div>
-
-</div>
-
-
-<label>{{informationNotice}}</label>
 </div>

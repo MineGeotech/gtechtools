@@ -2,6 +2,31 @@
 @import 'sb-admin';
 @import "ember-cli-font-awesome-sass";
 
+html, body {
+    height: 100%;
+  }
+
 tr {
     line-height: 10px;
+}
+.full-body{
+    display: flex;
+    flex:1;
+    flex-direction: column;
+}
+
+.file-list {
+    display: flex;
+    overflow-y: scroll;
+    height: 90vh;
+    background: white;
+}
+
+.main {
+    overflow-y: scroll;
+    display: flex;
+   
+    flex-direction: column;
+    height: 100vh
+ 
 }
