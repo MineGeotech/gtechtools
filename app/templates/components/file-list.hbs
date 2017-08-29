@@ -1,12 +1,11 @@
 <div class="container ">
-  <div class="padded">
+  <div>
     <button id="party" class="btn btn-primary " onclick={{action 'selectDir'}}><i class="fa fa-folder-open fa-fw" aria-hidden="true"></i> Open Directory</button>
   </div>
-  <div class="padded">
+  <div>
     <table class="table table-striped">
       <thead class="thead">
         <tr>
-          <th></th>
           <th>File / Directory</th>
           <th>Type</th>
         </tr>
@@ -15,14 +14,10 @@
         {{#each fileList as |file|}}
         <tr>
           {{#if file.isDirectory}}
-          <td>
-            <div class="folder-icon"></div>
-          </td>
+
           <td><a href="" {{action "openDir" file.filePath}}><i class="fa fa-folder-o fa-fw" aria-hidden="true"></i>  {{file.base}}</a></td>
           <td></td>
-          {{else}}
-          <td></td>
-          {{#if (or (eq file.fileExt "csv" )(eq file.fileExt "dxf" )(eq file.fileExt "str" ))}}
+          {{else}} {{#if (or (eq file.fileExt "csv" )(eq file.fileExt "dxf" )(eq file.fileExt "str" ))}}
           <td><a href="" {{action "openFile" file.filePath}}><i class="fa fa-file-code-o fa-fw" aria-hidden="true"></i> {{file.base}}</a></td>
           {{else}}
           <td><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> {{file.base}}</td>
@@ -34,6 +29,6 @@
         {{/each}}
       </tbody>
     </table>
-  
+
   </div>
 </div>

@@ -37,17 +37,12 @@ export default Ember.Service.extend({
                 return this.importDatamineCSV(filePath).then((df)=>{
                     resolve(df);
                     return df;
-                    })
-                    break;
+                    });
                 case '.dxf':
                 return this.importSurpacDXF(filePath).then((df)=>{
                     resolve(df);
                     return df;
-                    })
-
-
-                    break;
-
+                    });
                 default:
 
             }
@@ -120,8 +115,7 @@ export default Ember.Service.extend({
                 var parser = new DxfParser();
                 try {
                     var dxf = parser.parseSync(fileText);
-                    console.log(dxf);
-
+                
                     dxf.entities.forEach(function(entity) {
                         switch(entity.type){
                             case 'POINT':
@@ -133,21 +127,13 @@ export default Ember.Service.extend({
                             self.addpoly(entity.vertices,entity.color);
                             break;
                         }
-                        
-                        
-                        
-                        
+                                               
                     }, this);    
 
 
                 }catch(err) {
-                    return console.error(err.stack);
+                    throw(err);
                 }
-
-
-
-
-                console.log(self.dataFile);
 
                 resolve(self.dataFile);
                 return self.dataFile;
