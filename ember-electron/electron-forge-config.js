@@ -13,7 +13,7 @@ module.exports = {
   },
   "electronPackagerConfig": {},
   "electronWinstallerConfig": {
-    "name": "gtechtools"
+    "name": "GeotechTools"
   },
   "electronInstallerDebian": {},
   "electronInstallerRedhat": {},
