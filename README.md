@@ -10,6 +10,10 @@ The tool was developed for Mine Geotech  (http://www.minegeotech.com)
 
 You can download a pre-build windows installer from the windows installer directory
 
+See the wiki for help information
+
+https://github.com/MineGeotech/gtechtools/wiki
+
 ## Development Prerequisites
 
 If you wish to modify this application you will need the following things properly installed on your computer.
