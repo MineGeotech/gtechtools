@@ -14,8 +14,8 @@ module.exports = {
   "electronPackagerConfig": {},
   "electronWinstallerConfig": {
     "name": "GeotechTools",
-    "CompanyName":"MineGeotech",
-    "ProductName":"Geotech Tools",
+    "companyName":"MineGeotech",
+    "productName":"Geotech Tools",
     "packageName":"GeotechTools"
   },
   "electronInstallerDebian": {},

@@ -1,8 +1,10 @@
 {
   "id": "gtechtool",
   "name": "gtechtool",
-  "version": "0.0.1",
-  "description": "Small description for gtechtool goes here",
+  "productName":"GtechTool",
+  "companyName":"MineGeotech",
+  "version": "0.0.2",
+  "description": "Mine Geotech data conversion tool for Surfer",
   "license": "MIT",
   "author": "Murray Bryant",
   "directories": {
