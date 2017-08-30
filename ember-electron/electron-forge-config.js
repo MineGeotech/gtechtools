@@ -11,7 +11,16 @@ module.exports = {
       "rpm"
     ]
   },
-  "electronPackagerConfig": {},
+  "electronPackagerConfig": {
+    "name": 'GeotechTools',
+    "win32metadata": {
+      "ProductName": 'GeotechTools',
+      "InternalName": 'GeotechTools',
+      "CompanyName":"MineGeotech"
+    },
+    "overwrite": true
+
+  },
   "electronWinstallerConfig": {
     "name": "GeotechTools",
     "companyName":"MineGeotech",
