@@ -48,10 +48,14 @@
                 <div class="col-2">
                     <label>Output Directory</label>
                 </div>
-                <div class="col-8">
-                    {{input type="text" value=savePath }}
+                <div class="col-8 ">
+                  
+                    {{input type="text" value=savePath class="input-full"  }}
                 
-                     <button id="party" class="btn btn-info btn-sm" onclick={{action 'selectDir'}}><i class="fa fa-folder-open fa-fw" aria-hidden="true"></i></button>
+                 </div>
+                <div class="col-1">
+       <button id="party" class="btn btn-info btn-sm" onclick={{action 'selectDir'}}><i class="fa fa-folder-open fa-fw" aria-hidden="true"></i></button>
+             
                 </div>
 
             </div>
@@ -108,10 +112,7 @@
                         File Name: {{dataFile.name}}
                     </h4>
                 </div>
-                <div>
-                    File Directory Path: {{dataFile.dir}}
-                </div>
-                <div>
+                 <div>
                     File Type: {{dataFile.ext}}
                 </div>
             </div>

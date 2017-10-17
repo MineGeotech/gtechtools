@@ -6,6 +6,16 @@ export default Ember.Service.extend({
 
     export(file, fpath) {
         var self = this;
+
+        // test that export path exists
+        path.parse(fpath);
+
+        if (!fs.existsSync(fpath)){
+
+            throw "Directory Does not exist";
+
+        } 
+
         switch(file.outputFormat){
             case 'bln':
         var textFile = self.createBLN(file);
@@ -23,6 +33,7 @@ export default Ember.Service.extend({
     
             })
         break;
+  
     }
     },
     createDXF(file){
